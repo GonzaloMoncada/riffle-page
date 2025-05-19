@@ -80,7 +80,7 @@ export default function Home() {
         setNumbers(data);
         console.log(data);
 
-      } catch{
+      } catch {
       } finally {
         setLoading(false);
       }
@@ -122,11 +122,15 @@ export default function Home() {
   }
   return (
     <div className="overflow-y-hidden flex flex-col items-center justify-center min-h-screen w-screen bg-gray-100">
-      <div className="flex flex-col md:flex-row border border-gray-300 rounded-lg h-screen shadow-lg bg-white md:w-[70vw] w-full">
-        <div className="flex w-full justify-end items-center px-2 pt-2">
-          <button onClick={deleteRiffleAll} className="w-8 h-8"><img src="/icons/refresh-square.svg" alt="" /></button>
+      <div className="flex flex-col md:flex-row md:items-center md:relative border md:p-4 border-gray-300 rounded-lg h-screen md:h-[80vh] shadow-lg bg-white md:w-[70vw] w-full">
+        <div className="flex w-full justify-end items-center px-2 pt-2 md:absolute md:top-10 md:justify-start md:w-full md:m-2">
+          <button onClick={deleteRiffleAll} className="w-8 h-8 md:w-14 md:h-14 cursor-pointer md:flex md:items-center md:gap-2">
+            <img src="/icons/refresh-square.svg" alt="" />
+            <span className="hidden md:block md:text-2xl md:font-semibold"> Reiniciar</span>
+          </button>
+
         </div>
-        <main className="p-2 h-3/4 grid grid-cols-10 grid-rows-10">
+        <main className="p-4 h-3/4 md:w-full grid grid-cols-10 grid-rows-10">
           {loading ? (
             /* El spinner cubre la cuadrícula, pero sin desmontarla */
             <Spinner />
@@ -141,9 +145,9 @@ export default function Home() {
             ))
           )}
         </main>
-        <aside className="flex justify-center items-center flex-col border-t border-gray-200 p-4 gap-2">
+        <aside className="flex justify-center items-center flex-col border-t md:border-none md:p-0 md:w-1/4 border-gray-200 p-4 gap-2">
           <form onSubmit={handleSubmit} className="flex justify-center w-full items-center flex-col gap-2">
-            <div className="flex flex-row justify-around w-full items-center">
+            <div className="flex flex-row justify-around md:justify-between w-full items-center">
               <span className="font-bold w-1/4">
                 {numbers.filter(number => number.confirmation).length + '/100'}
               </span>
@@ -163,7 +167,7 @@ export default function Home() {
               {numberSelected.id}
             </div>
             {numberSelected.name}
-            <button onClick={handlePaid} className={` cursor-pointer ml-auto p-3 rounded-xl text-white font-bold ${numberSelected.paid ? 'bg-green-500' : 'bg-gray-500'
+            <button onClick={handlePaid} className={` cursor-pointer ml-auto p-3 md:whitespace-nowrap rounded-xl text-white font-bold ${numberSelected.paid ? 'bg-green-500' : 'bg-gray-500'
               }`}>{numberSelected.paid ? "Pagado" : "Sin pagar"}</button>
           </div>
         </aside>
