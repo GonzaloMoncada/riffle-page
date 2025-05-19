@@ -1,42 +1,50 @@
 'use client';
 import { NumberRiffleProps } from "@/types/numberRiffle";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Props = {
     number: NumberRiffleProps;
     onNumberClick: (id: number) => void;
     onDelete: boolean;
+    onSelect: (id: number) => void;
 }
 
-export default function NumberRiffle({ number, onNumberClick, onDelete}: Props) {
-    const [focus, setFocus] = useState(number.confirmation);
+export default function NumberRiffle({ number, onNumberClick, onDelete, onSelect }: Props) {
+    const [focus, setFocus] = useState(false);
+
+    useEffect(() => {
+        setFocus(false);
+    }, [number]);
+
     const handleClick = (number: NumberRiffleProps) => {
-        if (onDelete){
+        if (onDelete) {
 
         }
-        else{
+        else {
             setFocus(!focus);
             onNumberClick(number.id);
         }
     }
-    if(onDelete){
+    if (onDelete) {
         return (
             <button>
                 algo
             </button>
         )
-        
-    }else
-    if (number.confirmation) {
-        return (
-            <button className={`border border-gray-400 bg-gray-400 flex items-center justify-center text-black`}>
-                {number.id}
-            </button>
-        )
-    }
+
+    } else
+        if (number.confirmation) {
+            return (
+                <button onClick={() => onSelect(number.id)} className={`border flex  justify-center flex-col w-full text-black ${number.paid ? "bg-green-500 text-white" : "border-gray-400 bg-gray-400"}`}>
+                    {number.id}<span className="truncate font-semibold text-sm text-white">
+                        {number.name}
+                    </span>
+                </button>
+            )
+        }
 
     return (
-        <button onClick={() => handleClick(number)} className={`cursor-pointer border border-gray-400 flex items-center justify-center text-black ${focus ? "bg-green-400" : "bg-white"}`}>
+        <button onClick={() => handleClick(number)} className={`cursor-pointer border border-gray-400 flex items-center justify-center text-black ${focus ? "border-green-500 text-green-500" : "bg-white"}`}>
             {number.id}
         </button>
     )
