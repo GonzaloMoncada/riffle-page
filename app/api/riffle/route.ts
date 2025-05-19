@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { connectToDatabase } from '@/lib/mongodb'
 import { Db } from 'mongodb'
 
+
 async function initializeIfEmpty(db: Db) {
   const count = await db.collection('items').countDocuments()
   if (count === 0) {

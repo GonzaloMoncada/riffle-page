@@ -9,29 +9,18 @@ export default function Home() {
   const [numbers, setNumbers] = useState<NumberRiffleProps[]>([]);
   const [updates, setUpdates] = useState<UpdateItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [name, setName] = useState('');
   const [numberSelected, setNumberSelected] = useState<numberSelect>({ id: undefined, name: "Ninguno Seleccionado", paid: false });
 
-  const MainLoader = () => (
-    <main className="flex h-3/4 w-full items-center justify-center p-2">
-      <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
-    </main>
-  );
-  const NumbersGrid = () => (
-    <main className="grid h-3/4 w-full grid-cols-10 grid-rows-10 p-2">
-      {numbers.map(number => (
-        <NumberRiffle
-          key={number.id}
-          number={number}
-          onNumberClick={handleNumberClick}
-          onDelete={false}
-          onSelect={handleSelected}
-        />
-      ))}
-    </main>
-  );
+  function Spinner() {
+    return (
+      <div className="col-span-full row-span-full flex items-center justify-center">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
+      </div>
+    );
+  }
   const copyLeft = () => {
+    console.log(numbers.filter(number => !number.confirmation));
     const numbersLeft = numbers.filter(number => !number.confirmation);
     const idsText = numbersLeft.map(n => n.id).join('_');
     console.log(idsText);
@@ -39,7 +28,7 @@ export default function Home() {
       console.error('Error al copiar:', err)
     );
   }
-  const deleteRiffleAll = async () =>{
+  const deleteRiffleAll = async () => {
     await deleteRiffle();
     location.reload();
   }
@@ -89,8 +78,9 @@ export default function Home() {
       try {
         const data = await getNumbers();
         setNumbers(data);
-      } catch (err: any) {
-        setError(err.message ?? 'Error fetching data');
+        console.log(data);
+
+      } catch{
       } finally {
         setLoading(false);
       }
@@ -117,13 +107,15 @@ export default function Home() {
     try {
       const toSend = updates.filter(u => u.confirmation).map(u => ({ ...u, name }));
       await Promise.all(toSend.map(updateNumber));
-      setName('');
+      const map = new Map(toSend.map(u => [u.id, u]));
+
       setNumbers(prev =>
-        prev.map(item => {
-          const match = updates.find(u => u.id === item.id);
-          return match ? { ...item, ...match } : item;
-        })
+        prev.map(item =>
+          map.has(item.id) ? { ...item, ...map.get(item.id)! } : item
+        )
       );
+      setUpdates([]);
+      setName('');
     } catch {
       alert('Error al confirmar')
     }
@@ -132,9 +124,23 @@ export default function Home() {
     <div className="overflow-y-hidden flex flex-col items-center justify-center min-h-screen w-screen bg-gray-100">
       <div className="flex flex-col md:flex-row border border-gray-300 rounded-lg h-screen shadow-lg bg-white md:w-[70vw] w-full">
         <div className="flex w-full justify-end items-center px-2 pt-2">
-        <button onClick={deleteRiffleAll} className="w-8 h-8"><img src="/icons/refresh-square.svg" alt="" /></button>
+          <button onClick={deleteRiffleAll} className="w-8 h-8"><img src="/icons/refresh-square.svg" alt="" /></button>
         </div>
-        {loading ? <MainLoader /> : <NumbersGrid />}
+        <main className="p-2 h-3/4 grid grid-cols-10 grid-rows-10">
+          {loading ? (
+            /* El spinner cubre la cuadrícula, pero sin desmontarla */
+            <Spinner />
+          ) : (
+            numbers.map(number => (
+              <NumberRiffle
+                key={number.id}
+                number={number}
+                onNumberClick={handleNumberClick}
+                onSelect={handleSelected}
+              />
+            ))
+          )}
+        </main>
         <aside className="flex justify-center items-center flex-col border-t border-gray-200 p-4 gap-2">
           <form onSubmit={handleSubmit} className="flex justify-center w-full items-center flex-col gap-2">
             <div className="flex flex-row justify-around w-full items-center">

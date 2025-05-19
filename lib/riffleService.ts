@@ -1,5 +1,3 @@
-import { log } from "node:console";
-
 export type NumberRiffle = {
   id: number;
   name: string;

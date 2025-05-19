@@ -7,14 +7,17 @@ let cachedClient: MongoClient | null = null
 let cachedDb: Db | null = null
 
 export async function connectToDatabase() {
-  if (cachedClient && cachedDb) return { client: cachedClient, db: cachedDb }
+  if (cachedClient && cachedDb) return { client: cachedClient, db: cachedDb };
 
-  const client = new MongoClient(uri)          // usa el pool interno del driver
-  await client.connect()
-
-  const db = client.db(dbName)
-  cachedClient = client
-  cachedDb = db
-
-  return { client, db }
+  try {
+    const client = new MongoClient(uri);
+    await client.connect();
+    const db = client.db(dbName);
+    cachedClient = client;
+    cachedDb = db;
+    return { client, db };
+  } catch (error) {
+    console.error("Error conectando a MongoDB:", error);
+    throw error;
+  }
 }
