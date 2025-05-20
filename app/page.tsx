@@ -124,9 +124,9 @@ export default function Home() {
     <div className="overflow-y-hidden flex flex-col items-center justify-center min-h-screen w-screen bg-gray-100">
       <div className="flex flex-col md:flex-row md:items-center md:relative border md:p-4 border-gray-300 rounded-lg h-screen md:h-[80vh] shadow-lg bg-white md:w-[70vw] w-full">
         <div className="flex w-full justify-end items-center px-2 pt-2 md:absolute md:top-10 md:justify-start md:w-full md:m-2">
-          <button onClick={deleteRiffleAll} className="w-8 h-8 md:w-14 md:h-14 cursor-pointer md:flex md:items-center md:gap-2">
+          <button onClick={deleteRiffleAll} className="w-8 h-8 md:w-10 md:h-10 cursor-pointer md:flex md:items-center md:gap-2">
             <img src="/icons/refresh-square.svg" alt="" />
-            <span className="hidden md:block md:text-2xl md:font-semibold"> Reiniciar</span>
+            <span className="hidden md:block md:text-xl md:font-semibold"> Reiniciar</span>
           </button>
 
         </div>

@@ -22,7 +22,7 @@ export default function NumberRiffle({ number, onNumberClick, onSelect }: Props)
     if (number.confirmation) {
         return (
             <button onClick={() => onSelect(number.id)} className={`border flex  justify-center flex-col w-full text-black ${number.paid ? "bg-green-500 text-white" : "border-gray-400 bg-gray-400"}`}>
-                {number.id}<span className="truncate font-semibold text-sm text-white">
+                {number.id}<span className="truncate font-semibold text-sm md:text-xs text-white">
                     {number.name}
                 </span>
             </button>
