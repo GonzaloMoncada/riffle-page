@@ -3,8 +3,8 @@ Esto es un proyecto de [Next.js](https://nextjs.org) Next.js creado con [`create
 ## Screenshots
 
 <p align="center">
-  <img src="images/phone.jpg" alt="phone" width="100"/>
-  <img src="images/phone.jpg" alt="pc" width="200"/>
+  <img src="images/phone.png" alt="phone" width="100"/>
+  <img src="images/phone.png" alt="pc" width="200"/>
 </p>
 ## Comenzando
 
